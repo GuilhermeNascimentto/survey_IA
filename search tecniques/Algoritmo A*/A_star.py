@@ -23,45 +23,45 @@ print(grafo)
 # creates an empty dictionary for the heuristic function
 heuristica = {}
 
-# abre o arquivo somente para leitura adiciona ao dicionário
+# open file read-only add to dictionary
 with open('heuristica_map_romenia.txt', 'r') as arquivo:
     for linha in arquivo:
         nome, valor = linha.strip().split(',')
         heuristica[nome] = int(valor)
 
-# define a função heurística que retorna o valor da heurística para um determinado nó
+# defines the heuristic function that returns the value of the heuristic for a given node
 def funcao_heuristica(nodo):
     return heuristica.get(nodo, 0)
 
 
 def a_star(inicio, destino, grafo):
-    # define as estruturas de dados usadas pelo algoritmo
+    # defines the data structures used by the algorithm
     abertos = [(inicio, 0)]
     fechados = set()
     pai = {}
-    custo_g = {inicio: 0}  # definição da variável custo_g
+    custo_g = {inicio: 0}  # definition of the cost_g variable
     
-    # define a função de prioridade com a heurística
+    # the priority function with the heuristic
     def prioridade(nodo):
      return custo_g[nodo] + funcao_heuristica(nodo)
 
-    # executa o algoritmo A*
+    # runs the A* algorithm
     while abertos:
-        # obtém o nó com menor prioridade da lista de abertos
+        # gets the lowest priority node from the open list
         atual, _ = min(abertos, key=lambda x: prioridade(x[0]))
 
-        # se o nó atual é o destino, retorna o caminho
+        # if the current node is the destination, returns the path
         if atual == destino:
             caminho = [atual]
             while caminho[-1] != inicio:
                 caminho.append(pai[caminho[-1]])
             return caminho[::-1]
         
-        # remove o nó atual da lista de abertos e adiciona na lista de fechados
+        # removes the current node from the open list and adds it to the closed list
         abertos.remove((atual, _))
         fechados.add(atual)
 
-        # para cada nó adjacente ao nó atual, calcula o custo atualizado
+        # for each node adjacent to the current node, calculates the updated cost
         for adjacente, custo in grafo[atual].items():
             if adjacente in fechados:
                 continue
@@ -72,20 +72,18 @@ def a_star(inicio, destino, grafo):
                 pai[adjacente] = atual
                 custo_g[adjacente] = novo_custo
                 
-                # adiciona o nó adjacente à lista de abertos com sua prioridade
+                # adds the adjacent node to the open list with its priority
                 abertos.append((adjacente, prioridade(adjacente)))
     
-    # se não encontrar um caminho, retorna None
+    # if it doesn't find a path, returns None
     return None
 
 
-
-# define os valores de inicio e destino
-inicio = 'Zerind'
+# set the start and destination valuesinicio = 'Zerind'
 destino = 'Bucharest'
 
-# executa o algoritmo A*
+# starts the A* algorithm
 caminho = a_star(inicio, destino, grafo)
 
-# imprime o resultado
+# print the result
 print(f"Caminho encontrado: {caminho}")
