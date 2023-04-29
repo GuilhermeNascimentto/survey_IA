@@ -46,7 +46,7 @@ def a_star(inicio, destino, grafo):
      return custo_g[nodo] + funcao_heuristica(nodo)
 
     # runs the A* algorithm
-    while abertos:
+    while True:
         # gets the lowest priority node from the open list
         atual, _ = min(abertos, key=lambda x: prioridade(x[0]))
 
@@ -79,7 +79,8 @@ def a_star(inicio, destino, grafo):
     return None
 
 
-# set the start and destination valuesinicio = 'Zerind'
+# set the start and destination values
+inicio = 'Zerind'
 destino = 'Bucharest'
 
 # starts the A* algorithm
